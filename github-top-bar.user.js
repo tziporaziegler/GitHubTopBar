@@ -11,7 +11,7 @@
 
 (function() {
     //Remove Gist tab
-    $('.header-nav:not(.user-nav) li:nth-child(3)').remove();
+    $('.header-nav:not(.user-nav)').find('li:nth-child(3)').remove();
 })();
 
 
