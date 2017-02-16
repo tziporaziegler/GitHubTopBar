@@ -11,7 +11,7 @@
 
 (function() {
     //Remove Gist tab
-    $('.header-nav li:nth-child(3)').remove();
+    $('.header-nav:not(.user-nav) li:nth-child(3)').remove();
 })();
 
 
@@ -24,7 +24,7 @@ function addGlobalStyle(css) {
     head.appendChild(style);
 }
 
-//Change background to lightgrey. Reduce padding. Add grey bottom border.
+//Change background to lightgrey. Reduce top and bottom padding. Add grey bottom border.
 addGlobalStyle (
     '.header{ background-color:#f5f5f5; padding-top:7px; padding-bottom: 7px; border-bottom:1px solid #e5e5e5; }'
 );
