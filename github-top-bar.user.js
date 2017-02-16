@@ -35,11 +35,11 @@ addGlobalStyle (
 );
 
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github:hover, .header-nav-link:hover { color:#555555 }'
+    '.header-logo-invertocat .octicon-mark-github:hover, .header-nav-link:hover, .header-nav-link:focus { color:#555555 }'
 );
 
 addGlobalStyle (
-    '.header-nav-link:hover .dropdown-caret, .header-nav-link:focus .dropdown-caret { border-top-color: #666666; }'
+    '.header-nav-link:hover .dropdown-caret, .header-nav-link:focus .dropdown-caret { border-top-color: #555555; }'
 );
 
 //Fix search bar
