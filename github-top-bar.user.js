@@ -4,14 +4,14 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.0
+// @version     1.1
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
 
 (function() {
-    //Remove Gist tab
-    $('.header-nav:not(.user-nav)').find('li:nth-child(3)').remove();
+    //Remove Gist and Marketplace tabs
+    $('.header-nav:not(.user-nav) li:nth-child(n+3)').remove();
 })();
 
 
