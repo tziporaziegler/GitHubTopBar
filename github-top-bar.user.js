@@ -31,15 +31,15 @@ addGlobalStyle (
 
 //Change nav items to black
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github, .header-nav-link, .header .header-search-input { color:black }'
+    '.header-logo-invertocat .octicon-mark-github, .header-navlink, .header .header-search-input { color:black }'
 );
 
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github:hover, .header-nav-link:hover, .header-nav-link:focus { color:#555555 }'
+    '.header-logo-invertocat .octicon-mark-github:hover, .header-navlink:hover, .header-navlink:focus { color:#555555 }'
 );
 
 addGlobalStyle (
-    '.header-nav-link:hover .dropdown-caret, .header-nav-link:focus .dropdown-caret { border-top-color: #555555; }'
+    '.header-navlink:hover .dropdown-caret, .header-navlink:focus .dropdown-caret { border-top-color: #555555; }'
 );
 
 //Fix search bar
