@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.3
+// @version     1.4
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -26,29 +26,29 @@ function addGlobalStyle(css) {
 
 //Change background to lightgrey. Reduce top and bottom padding. Add grey bottom border.
 addGlobalStyle (
-    '.header{ background-color:#f5f5f5; padding-top:7px; padding-bottom: 7px; border-bottom:1px solid #e5e5e5; }'
+    '.Header{ background-color:#f5f5f5; padding-top:7px; padding-bottom: 7px; border-bottom:1px solid #e5e5e5; }'
 );
 
 //Change nav items to black
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github, .header-navlink, .header .header-search-input { color:black }'
+    '.header-logo-invertocat .octicon-mark-github, .user-nav a, .Header .header-search-input, .HeaderNavlink { color:black }'
 );
 
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github:hover, .header-navlink:hover, .header-navlink:focus { color:#555555 }'
+    '.header-logo-invertocat .octicon-mark-github:hover, .user-nav a:hover, .user-nav a:focus { color:#555555 }'
 );
 
 addGlobalStyle (
-    '.header-navlink:hover .dropdown-caret, .header-navlink:focus .dropdown-caret { border-top-color: #555555; }'
+    '.user-nav a:hover .dropdown-caret, .user-nav a:focus .dropdown-caret { border-top-color: #555555; }'
 );
 
 //Fix search bar
 addGlobalStyle (
-    '.header .header-search-wrapper { background-color:white; border: 1px solid #e5e5e5; }'
+    '.Header .header-search-wrapper { background-color:white; border: 1px solid #e5e5e5; }'
 );
 
 addGlobalStyle (
-    '.header .header-search-wrapper.focus { background-color:#fefefe; border: 1px solid #e5e5e5; }'
+    '.Header .header-search-wrapper.focus { background-color:#fefefe; border: 1px solid #e5e5e5; }'
 );
 
 addGlobalStyle (
