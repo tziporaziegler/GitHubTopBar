@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.4
+// @version     1.5
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -13,7 +13,6 @@
     //Remove Gist and Marketplace tabs
     $('[role=navigation] li:nth-child(n+3)').remove();
 })();
-
 
 function addGlobalStyle(css) {
     var head = document.getElementsByTagName('head')[0];
@@ -35,7 +34,7 @@ addGlobalStyle (
 );
 
 addGlobalStyle (
-    '.header-logo-invertocat .octicon-mark-github:hover, .user-nav a:hover, .user-nav a:focus { color:#555555 }'
+    '.header-logo-invertocat .octicon-mark-github:hover, .user-nav a:hover, .user-nav a:focus, .HeaderNavlink:hover { color:#555555 }'
 );
 
 addGlobalStyle (
@@ -52,7 +51,7 @@ addGlobalStyle (
 );
 
 addGlobalStyle (
-    '.header .header-search-scope, .header .header-search-wrapper.focus .header-search-scope { color:#666666; border-right-color:#dddddd; }'
+    '.Header .header-search-scope, .Header .header-search-wrapper.focus .header-search-scope { color:#666666; border-right-color:#dddddd; }'
 );
 
 //Set the search placeholder color
