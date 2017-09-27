@@ -1,7 +1,13 @@
 # GitHubTopBar
 A userscript for styling the GitHub top-bar.
 
-![Top-Bar Screenshot][1]
+[![Top-Bar Screenshot][1]][1]
+
+### Installation
+
+- [GitHub][2]
+
+### Features and Customization
 
 This script gives the options to:
 
@@ -36,4 +42,5 @@ This script gives the options to:
       
 - Hide the Gist and Marketplace tabs
 
-[1]:https://github.com/tziporaziegler/GitHubTopBar/blob/master/top-bar-1.2.2.png
+[1]: https://github.com/tziporaziegler/GitHubTopBar/blob/master/top-bar-1.2.2.png
+[2]: https://github.com/tziporaziegler/GitHubTopBar/raw/master/github-top-bar.user.js
