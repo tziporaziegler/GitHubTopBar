@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.2.2
+// @version     1.2.3
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -240,15 +240,13 @@
 
     function setStickiness() {
         if(isSticky){
+            $('.js-header-wrapper').after('<div id="sticky-placeholder-div" style="padding-top: ' + barHeight + 'px;"></div>');
+
             let css = '' +
                 '.js-header-wrapper {\n' +
                 '    width:100%;\n' +
                 '    position: fixed !important;\n' +
                 '    z-index: 999;\n' +
-                '}\n' +
-
-                '[role="main"] {\n' +
-                '    padding-top:' + barHeight + 'px;\n' +
                 '}\n' +
 
                 '.user-profile-nav.is-stuck {\n' +
