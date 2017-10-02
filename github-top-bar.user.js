@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.2.3
+// @version     1.2.4
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -186,13 +186,16 @@
         menuItems.forEach(function(obj) {
             if(obj.visible)
             {
-                let element = '<li><span class="d-inline-block px-2">' +
-                    '<a href="' + obj.url + '" aria-label="' + obj.tooltip + '" class="menu-icon tooltipped tooltipped-s" style="top:3px" target="' + obj.target + '">'  +
-                    '<svg width="' + ICON_SIZE + '" height="' + ICON_SIZE + '" viewBox="0 0 ' + obj.viewBoxWidth + ' ' + obj.viewBoxHeight + '" xmlns="http://www.w3.org/2000/svg">' +
-                    obj.icon +
-                    '</svg>' +
-                    '</a>' +
-                    '</span></li>';
+                let element = `
+                    <li>
+                        <span class="d-inline-block px-2">
+                            <a href="${obj.url}" aria-label="${obj.tooltip}" class="menu-icon tooltipped tooltipped-s" style="top:3px" target="${obj.target}">
+                                <svg width="${ICON_SIZE}" height="${ICON_SIZE}" viewBox="0 0 ${obj.viewBoxWidth} ${obj.viewBoxHeight}" xmlns="http://www.w3.org/2000/svg">
+                                    ${obj.icon}
+                                </svg>
+                            </a>
+                        </span>
+                    </li>`;
 
                 if(obj.before) {
                     firstli.before(element);
@@ -230,115 +233,125 @@
 
     function setSize() {
         //Control header height by changing padding height
-        let css = '' +
-            '.Header{\n' +
-            '    padding-top: ' + paddingHeight + 'px;\n' +
-            '    padding-bottom: ' + paddingHeight + 'px;\n' +
-            '}\n';
+        let css = `
+            .Header{
+                padding-top: ${paddingHeight}px;
+                padding-bottom: ${paddingHeight}px;
+            }`;
         addGlobalStyle(css);
     }
 
     function setStickiness() {
         if(isSticky){
-            $('.js-header-wrapper').after('<div id="sticky-placeholder-div" style="padding-top: ' + barHeight + 'px;"></div>');
+            $('.js-header-wrapper').after(
+                `<div id="sticky-placeholder-div" style="padding-top: ${barHeight}px;"></div>`
+            );
 
-            let css = '' +
-                '.js-header-wrapper {\n' +
-                '    width:100%;\n' +
-                '    position: fixed !important;\n' +
-                '    z-index: 999;\n' +
-                '}\n' +
+            let css = `
+                .js-header-wrapper {
+                    width:100%;
+                    position: fixed !important;
+                    z-index: 999;
+                }
 
-                '.user-profile-nav.is-stuck {\n' +
-                '    margin-top:' + barHeight + 'px !important;\n' +
-                '}\n' +
+                .user-profile-nav.is-stuck {
+                    margin-top: ${barHeight}px !important;
+                }
 
-                //No need to have profile visible twice, since already visible in stick top-bar
-                '.user-profile-sticky-bar.is-stuck {\n' +
-                '    opacity:0 !important;\n' +
-                '}\n' +
+                ${/*No need to have profile visible twice, since already visible in stick top-bar*/''}
+                .user-profile-sticky-bar.is-stuck {
+                    opacity:0 !important;
+                }
 
-                '';
+                `;
 
             addGlobalStyle(css);
         }
     }
 
     function setColor() {
-        let css = '' +
-            '.Header{\n' +
-            '    background-color: ' + defaultBackgroundColor +';\n' +
-            '    border-bottom: 1px solid ' + defaultBorderColor + ' ;\n' +
-            '}\n' +
+        let css = `
+            .Header{
+                background-color: ${defaultBackgroundColor};
+                border-bottom: 1px solid ${defaultBorderColor};
+            }
 
-            '.header-logo-invertocat .octicon-mark-github,\n' +
-            '.user-nav a,\n' +
-            '.Header .header-search-input,\n' +
-            '.HeaderNavlink {\n' +
-            '    color:' + defaultColor + '\n' +
-            '}\n' +
+            .header-logo-invertocat .octicon-mark-github,
+            .user-nav a,
+            .Header .header-search-input,
+            .HeaderNavlink {
+                color: ${defaultColor};
+            }
 
-            '.header-logo-invertocat .octicon-mark-github:hover,\n' +
-            '.HeaderNavlink:hover,\n' +
-            '.HeaderNavlink:focus,\n' +
-            '.HeaderNavlink.selected,\n' +
-            '.user-nav .dropdown a:not(.dropdown-item):hover,\n' +
-            '.user-nav .dropdown a:not(.dropdown-item):focus {\n' +
-            '    color:' + defaultHoverColor + ' !important;\n' +
-            '}\n' +
+            .header-logo-invertocat .octicon-mark-github:hover,
+            .HeaderNavlink:hover,
+            .HeaderNavlink:focus,
+            .HeaderNavlink.selected,
+            .user-nav .dropdown a:not(.dropdown-item):hover,
+            .user-nav .dropdown a:not(.dropdown-item):focus {
+                color: ${defaultHoverColor} !important;
+            }
 
-            '.HeaderNavlink:hover .dropdown-caret,\n' +
-            '.HeaderNavlink:focus .dropdown-caret {\n' +
-            '    border-top-color: ' + defaultHoverColor + ';\n' +
-            '}\n' +
+            .HeaderNavlink:hover .dropdown-caret,
+            .HeaderNavlink:focus .dropdown-caret {
+                border-top-color: ${defaultHoverColor};
+            }
 
-            '.user-nav .menu-icon:hover,\n' +
-            '.user-nav .menu-icon:focus {\n' +
-            '    fill: ' + defaultHoverColor + ';\n' +
-            '}\n' +
+            .user-nav .menu-icon:hover,
+            .user-nav .menu-icon:focus {
+                fill: ${defaultHoverColor};
+            }
 
-            '';
+            `;
 
         addGlobalStyle(css);
     }
 
     function styleSearchBar() {
-        let placeholderStyle = '    color:#999 !important;\n';
+        let placeholderStyle = `color:#999 !important;`;
 
-        let css = '' +
-            '.Header .header-search-wrapper {\n' +
-            '    background-color:white;\n' +
-            '    border: 1px solid ' + defaultBorderColor + ';\n' +
-            '}\n' +
+        let css = `
+            .Header .header-search-wrapper {
+                background-color:white;
+                border: 1px solid ${defaultBorderColor};
+            }
 
-            '.Header .header-search-wrapper.focus {\n' +
-            '    background-color:#fefefe;\n' +
-            '    border: 1px solid ' + defaultBorderColor + ';\n' +
-            '}\n' +
+            .Header .header-search-wrapper.focus {
+                background-color:#fefefe;
+                border: 1px solid ${defaultBorderColor};
+            }
 
-            '.Header .header-search-scope,\n' +
-            '.Header .header-search-wrapper.focus .header-search-scope {\n' +
-            '    color:#666666;\n' +
-            '    border-right-color: #dddddd;\n' +
-            '}\n' +
+            .Header .header-search-scope,
+            .Header .header-search-wrapper.focus .header-search-scope {
+                color:#666666;
+                border-right-color: #dddddd;
+            }
 
 
-            //Set the search placeholder color
-            //Need a separate line for each browser because when a browser doesn’t understand a selector, it invalidates the entire line of selectors
+            ${/*Set the search placeholder color.
+                Need a separate line for each browser because when a browser doesn’t understand a selector, it invalidates the entire line of selectors.*/''}
 
-            /* Chrome/Opera/Safari */
-            '::-webkit-input-placeholder {\n' + placeholderStyle +'}\n' +
+            ${/* Chrome/Opera/Safari */''}
+            ::-webkit-input-placeholder {
+                ${placeholderStyle}
+            }
 
-            /* Firefox 19+ */
-            '::-moz-placeholder {\n' + placeholderStyle +'}\n' +
+            ${/* Firefox 19+ */''}
+            ::-moz-placeholder {
+                ${placeholderStyle}
+            }
 
-            /* IE 10+ */
-            ':-ms-input-placeholder {\n' + placeholderStyle +'}\n' +
+            ${/* IE 10+ */''}
+            :-ms-input-placeholder {
+                ${placeholderStyle}
+            }
 
-            /* Firefox 18- */
-            ':-moz-placeholder {\n' + placeholderStyle +'}\n' +
+            ${/* Firefox 18- */''}
+            :-moz-placeholder {
+                ${placeholderStyle}
+            }
 
-            '';
+            `;
 
         addGlobalStyle(css);
     }
