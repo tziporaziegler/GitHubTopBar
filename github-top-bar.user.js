@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.2.4
+// @version     1.2.5
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -183,7 +183,7 @@
             }
         ];
 
-        menuItems.forEach(function(obj) {
+        for(let obj of menuItems) {
             if(obj.visible)
             {
                 let element = `
@@ -204,7 +204,7 @@
                     firstli.after(element);
                 }
             }
-        });
+        }
     }
 
     function removeMenuItems() {
