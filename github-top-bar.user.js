@@ -4,7 +4,7 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.2.5
+// @version     1.2.6
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -42,7 +42,13 @@
     //other
     var isSticky = true;
 
-    doTasksRequiringHeader(whenHeaderExists);
+    if (document.readyState === 'loading') {
+        doTasksRequiringHeader(whenHeaderExists);
+        window.addEventListener('DOMContentLoaded', afterLoaded);
+    } else {
+        doTasksRequiringHeader(whenHeaderExists);
+        afterLoaded();
+    }
 
     function whenHeaderExists() {
         header = document.querySelector('.Header');
@@ -90,6 +96,14 @@
             callback();
         }
     }
+
+    function afterLoaded() {
+        //Tasks to be run after the document is loaded.
+        if (window.location.pathname.startsWith('/settings/')) {
+            //constructPreferences();
+        }
+    }
+
 
     function addGlobalStyle(css) {
         var head = document.getElementsByTagName('head')[0];
@@ -354,6 +368,19 @@
             `;
 
         addGlobalStyle(css);
+    }
+
+
+    function constructPreferences(){
+        //$('nav:first() a:nth-child(2)').after('<a href="/settings/display" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/display">Display</a>');
+        $('nav:first() a:nth-child(2)').after('<a id="display-nav" href="#" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/display">Display</a>');
+        document.getElementById("display-nav").addEventListener("click", showDisplayPrefsPage);
+    }
+
+    function showDisplayPrefsPage(){
+        $('.Subhead .Subhead-heading').text('Display');
+        $('.menu-item').removeClass('selected');
+        $("#display-nav").addClass('selected');
     }
 
 })();
