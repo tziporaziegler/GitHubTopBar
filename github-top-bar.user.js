@@ -4,10 +4,13 @@
 // @description A user script for styling the GitHub top-bar
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
-// @version     1.2.6
+// @require http://code.jquery.com/jquery-3.3.1.min.js
+// @version     1.2.7
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
+
+var $ = window.jQuery;
 
 (function() {
     'use strict';
@@ -51,7 +54,7 @@
     }
 
     function whenHeaderExists() {
-        header = document.querySelector('.Header');
+        header = document.querySelector('.Header-old');
 
         if (!header) {
             //It's not a new header
@@ -70,10 +73,12 @@
         }
     }
 
+    var observerForContainer;
+
     function doTasksRequiringHeader(callback) {
-        //Observe document.body for elements. Run the callback when the container (first after the top-bar) exists.
-        //  This results in the callback running immediately after the top-bar exists.
-        header = document.querySelector('.Header');
+        // Observe document.body for elements. Run the callback when the container (first after the top-bar) exists.
+        // This results in the callback running immediately after the top-bar exists.
+        header = document.querySelector('.Header-old');
         if (header === null) {
             if (typeof observerForContainer !== 'object' || observerForContainer === null) {
                 observerForContainer = new MutationObserver(function() {
@@ -248,7 +253,7 @@
     function setSize() {
         //Control header height by changing padding height
         let css = `
-            .Header{
+            .Header-old {
                 padding-top: ${paddingHeight}px;
                 padding-bottom: ${paddingHeight}px;
             }`;
@@ -285,16 +290,21 @@
 
     function setColor() {
         let css = `
-            .Header{
+            .Header-old {
                 background-color: ${defaultBackgroundColor};
                 border-bottom: 1px solid ${defaultBorderColor};
             }
 
             .header-logo-invertocat .octicon-mark-github,
             .user-nav a,
-            .Header .header-search-input,
-            .HeaderNavlink {
+            .Header-old .header-search-input,
+            .HeaderNavlink,
+            .HeaderMenu .dropdown-caret {
                 color: ${defaultColor};
+            }
+
+            .HeaderMenu .octicon-plus {
+                fill: ${defaultColor};
             }
 
             .header-logo-invertocat .octicon-mark-github:hover,
@@ -306,13 +316,15 @@
                 color: ${defaultHoverColor} !important;
             }
 
-            .HeaderNavlink:hover .dropdown-caret,
-            .HeaderNavlink:focus .dropdown-caret {
+            .HeaderMenu .dropdown-caret:hover,
+            .HeaderMenu .dropdown-caret:focus
+            .HeaderMenu .dropdown-caret:selected {
                 border-top-color: ${defaultHoverColor};
             }
 
-            .user-nav .menu-icon:hover,
-            .user-nav .menu-icon:focus {
+            .HeaderMenu .octicon-plus:hover,
+            .HeaderMenu .octicon-plus:focus
+            .HeaderMenu .octicon-plus:selected {
                 fill: ${defaultHoverColor};
             }
 
@@ -325,18 +337,18 @@
         let placeholderStyle = `color:#999 !important;`;
 
         let css = `
-            .Header .header-search-wrapper {
+            .Header-old .header-search-wrapper {
                 background-color:white;
                 border: 1px solid ${defaultBorderColor};
             }
 
-            .Header .header-search-wrapper.focus {
+            .Header-old .header-search-wrapper.focus {
                 background-color:#fefefe;
                 border: 1px solid ${defaultBorderColor};
             }
 
-            .Header .header-search-scope,
-            .Header .header-search-wrapper.focus .header-search-scope {
+            .Header-old .header-search-scope,
+            .Header-old .header-search-wrapper.focus .header-search-scope {
                 color:#666666;
                 border-right-color: #dddddd;
             }
