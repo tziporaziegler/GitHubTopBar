@@ -5,7 +5,7 @@
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
 // @require http://code.jquery.com/jquery-3.3.1.min.js
-// @version     1.2.7
+// @version     1.2.8
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -54,7 +54,7 @@ var $ = window.jQuery;
     }
 
     function whenHeaderExists() {
-        header = document.querySelector('.Header-old');
+        header = $('header');
 
         if (!header) {
             //It's not a new header
@@ -78,7 +78,7 @@ var $ = window.jQuery;
     function doTasksRequiringHeader(callback) {
         // Observe document.body for elements. Run the callback when the container (first after the top-bar) exists.
         // This results in the callback running immediately after the top-bar exists.
-        header = document.querySelector('.Header-old');
+        header = $('header');
         if (header === null) {
             if (typeof observerForContainer !== 'object' || observerForContainer === null) {
                 observerForContainer = new MutationObserver(function() {
@@ -120,13 +120,13 @@ var $ = window.jQuery;
     }
 
     function removeTabs() {
-        //Remove Gist and Marketplace tabs
-        $('[role=navigation] li:nth-child(n+3)').remove();
+        //Remove Marketplace tab
+        $('header nav a:contains("Marketplace")').remove();
     }
 
     function addIcons(){
-        let parent = $('.HeaderMenu ul.user-nav');
-        let firstli = $(parent).find('li').first();
+        let parent = $('header');
+        let firstItem = $(parent).find('.octicon-bell').closest('.Header-item');
         let avatar = $(parent).find('.avatar');
 
         //Replace profile pic dropdown menu with link to profile page
@@ -206,56 +206,56 @@ var $ = window.jQuery;
             if(obj.visible)
             {
                 let element = `
-                    <li>
-                        <span class="d-inline-block px-2">
-                            <a href="${obj.url}" aria-label="${obj.tooltip}" class="menu-icon tooltipped tooltipped-s" style="top:3px" target="${obj.target}">
-                                <svg width="${ICON_SIZE}" height="${ICON_SIZE}" viewBox="0 0 ${obj.viewBoxWidth} ${obj.viewBoxHeight}" xmlns="http://www.w3.org/2000/svg">
-                                    ${obj.icon}
-                                </svg>
-                            </a>
-                        </span>
-                    </li>`;
+                    <div class="Header-item">
+                       <a aria-label="${obj.tooltip}" class="Header-link tooltipped tooltipped-s" href="${obj.url}" target="${obj.target}">
+                            <span class="mail-status "></span>
+                            <svg viewBox="0 0 ${obj.viewBoxWidth} ${obj.viewBoxHeight}" width="${ICON_SIZE}" height="${ICON_SIZE}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                ${obj.icon}
+                            </svg>
+                        </a>
+                    </div>`;
 
                 if(obj.before) {
-                    firstli.before(element);
+                    firstItem.before(element);
                 }
                 else {
-                    firstli.after(element);
+                    firstItem.after(element);
                 }
             }
         }
     }
 
     function removeMenuItems() {
-        let parent = $('.HeaderMenu ul.user-nav .avatar').closest('details').find('ul');
+        let parent = $('header .avatar').closest('details').find('details-menu');
 
         if(showOverviewIcon) {
-            $('li a:contains("Your profile")').remove();
+            $(parent).find('a:contains("Your profile")').remove();
         }
 
         if(showStarsIcon) {
-            $('li a:contains("Your stars")').remove();
+            $(parent).find('a:contains("Your stars")').remove();
         }
 
         if(showHelpIcon) {
-            $('li a:contains("Help")').remove();
+            $(parent).find('a:contains("Help")').remove();
         }
 
         if(showSettingsIcon) {
-            $('li a:contains("Settings")').remove();
+            $(parent).find('a:contains("Settings")').remove();
         }
 
         if(showSignOutIcon) {
-            $('li a:contains("Sign Out")').remove();
+            $(parent).find('a:contains("Sign Out")').remove();
         }
     }
 
     function setSize() {
         //Control header height by changing padding height
         let css = `
-            .Header-old {
+            .Header {
                 padding-top: ${paddingHeight}px;
                 padding-bottom: ${paddingHeight}px;
+                line-height: normal;
             }`;
         addGlobalStyle(css);
     }
@@ -290,42 +290,30 @@ var $ = window.jQuery;
 
     function setColor() {
         let css = `
-            .Header-old {
+            .Header {
                 background-color: ${defaultBackgroundColor};
                 border-bottom: 1px solid ${defaultBorderColor};
             }
 
-            .header-logo-invertocat .octicon-mark-github,
-            .user-nav a,
-            .Header-old .header-search-input,
-            .HeaderNavlink,
-            .HeaderMenu .dropdown-caret {
+            .Header .octicon-mark-github,
+            .Header a,
+            .Header .Header-link {
                 color: ${defaultColor};
             }
 
-            .HeaderMenu .octicon-plus {
-                fill: ${defaultColor};
-            }
-
-            .header-logo-invertocat .octicon-mark-github:hover,
-            .HeaderNavlink:hover,
-            .HeaderNavlink:focus,
-            .HeaderNavlink.selected,
-            .user-nav .dropdown a:not(.dropdown-item):hover,
-            .user-nav .dropdown a:not(.dropdown-item):focus {
-                color: ${defaultHoverColor} !important;
-            }
-
-            .HeaderMenu .dropdown-caret:hover,
-            .HeaderMenu .dropdown-caret:focus
-            .HeaderMenu .dropdown-caret:selected {
-                border-top-color: ${defaultHoverColor};
-            }
-
-            .HeaderMenu .octicon-plus:hover,
-            .HeaderMenu .octicon-plus:focus
-            .HeaderMenu .octicon-plus:selected {
+            .Header .octicon-mark-github:hover,
+            .Header .octicon-mark-github:focus,
+            .Header a:not([role=menuitem]):hover,
+            .Header a:not([role=menuitem]):focus,
+            .Header-link .octicon-plus:hover,
+            .Header-link .octicon-plus:focus {
+                color: ${defaultHoverColor};
                 fill: ${defaultHoverColor};
+            }
+
+            .Header-link .dropdown-caret:hover,
+            .Header-link .dropdown-caret:focus {
+                border-top-color: ${defaultHoverColor};
             }
 
             `;
@@ -337,18 +325,18 @@ var $ = window.jQuery;
         let placeholderStyle = `color:#999 !important;`;
 
         let css = `
-            .Header-old .header-search-wrapper {
+            .Header .header-search-wrapper {
                 background-color:white;
                 border: 1px solid ${defaultBorderColor};
             }
 
-            .Header-old .header-search-wrapper.focus {
+            .Header .header-search-wrapper.focus {
                 background-color:#fefefe;
                 border: 1px solid ${defaultBorderColor};
             }
 
-            .Header-old .header-search-scope,
-            .Header-old .header-search-wrapper.focus .header-search-scope {
+            .Header .header-search-scope,
+            .Header .header-search-wrapper.focus .header-search-scope {
                 color:#666666;
                 border-right-color: #dddddd;
             }
