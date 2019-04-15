@@ -40,7 +40,7 @@ This script gives the options to:
 
       var isSticky = true;
       
-- Hide the Gist and Marketplace tabs
+- Hide the Marketplace tab
 
 [1]: https://github.com/tziporaziegler/GitHubTopBar/blob/master/top-bar-1.2.2.png
 [2]: https://github.com/tziporaziegler/GitHubTopBar/raw/master/github-top-bar.user.js
