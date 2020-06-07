@@ -5,7 +5,7 @@
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
 // @require http://code.jquery.com/jquery-3.3.1.min.js
-// @version     1.2.9
+// @version     1.2.10
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -41,15 +41,18 @@ var $ = window.jQuery;
   var showHelpIcon = false;
   var showSignOutIcon = false;
 
+  // menu
+  var menuItemsToRemove = ['Marketplace', 'Explore'];
+
   // other
   var isSticky = true;
 
   if (document.readyState === 'loading') {
     doTasksRequiringHeader(whenHeaderExists);
-    window.addEventListener('DOMContentLoaded', afterLoaded);
+    // window.addEventListener('DOMContentLoaded', afterLoaded);
   } else {
     doTasksRequiringHeader(whenHeaderExists);
-    afterLoaded();
+    // afterLoaded();
   }
 
   function whenHeaderExists() {
@@ -113,8 +116,10 @@ var $ = window.jQuery;
   }
 
   function removeTabs() {
-    //Remove Marketplace tab
-    $('header nav a:contains("Marketplace")').remove();
+    menuItemsToRemove.forEach(function(item) {
+        // The Marketplace tab is for some reason wrapped in a div, so check for <div> tags in addition to <a> tags.
+        $('header nav div:contains(' + item + '), a:contains(' + item + ')').remove();
+    });
   }
 
   function addIcons() {
