@@ -5,7 +5,7 @@
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
 // @require http://code.jquery.com/jquery-3.3.1.min.js
-// @version     1.2.12
+// @version     1.3.0
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -14,7 +14,7 @@ const $ = window.jQuery;
 
 (function() {
     const nameSpace = 'GitHubTopBar-';
-    const username = 'tziporaziegler';
+    const username = $('meta[name=octolytics-actor-login]').attr("content");
 
     // Create variables for easy customization
 
