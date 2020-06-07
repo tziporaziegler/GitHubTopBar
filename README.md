@@ -14,36 +14,36 @@ This script gives options for the features listed below. To customize any featur
 
 - Change the background, text and hover color:  
 
-      var defaultColor = '#000000';
-      var defaultHoverColor = '#555555';
-      var defaultInverseHoverColor = '#FFFFFF';
-      var defaultBackgroundColor = '#f5f5f5';
-      var defaultBorderColor = '#e5e5e5';
+      const defaultColor = '#000000';
+      const defaultHoverColor = '#555555';
+      const defaultInverseHoverColor = '#FFFFFF';
+      const defaultBackgroundColor = '#f5f5f5';
+      const defaultBorderColor = '#e5e5e5';
       
    By default, the colors are set the the old GitHub light-gray themed colors.
  
 -  Remove the excess top and bottom padding, which changes the overall height of the top-bar:
    
-       var paddingHeight = 5;
+       const paddingHeight = 5;
 
 - Choose which icons to display directly in the top-bar:
 
-      var showOverviewIcon = true;
-      var showReposIcon = true;
-      var showStarsIcon = true;
-      var showSettingsIcon = true;
-      var showHelpIcon = false;
-      var showSignOutIcon = false;
+      const showOverviewIcon = true;
+      const showReposIcon = true;
+      const showStarsIcon = true;
+      const showSettingsIcon = true;
+      const showHelpIcon = false;
+      const showSignOutIcon = false;
       
-  If a shortcut exists as a menu item in the "+" dropdown menu, if it is added as an icon to the top-bar directly, the corresponding menu item will automatically be removed.
+  If a shortcut exists as dropdown menu item, if it is added as an icon to the top-bar directly, the corresponding menu item will automatically be removed.
 
 - Make the top-bar sticky:
 
-      var isSticky = true;
+      const isSticky = true;
       
-- Hide menu tabs:
+- Hide tabs:
 
-      var menuItemsToRemove = ['Marketplace', 'Explore'];
+      const tabsToRemove = ['Marketplace', 'Explore'];
   
   By default, the "Marketplace" and "Explore" tabs are hidden. To hide addional tabs, add a string with the exact tab name to the array, like `'Pull requests'` or `'Issues'`. To show all tabs, set the value to `[]`.
 
