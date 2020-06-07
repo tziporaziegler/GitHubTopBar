@@ -10,42 +10,38 @@
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
 
-var $ = window.jQuery;
-
 (function() {
-  'use strict';
-
-  var nameSpace = 'GitHubTopBar-';
-  var username = 'tziporaziegler';
+  const nameSpace = 'GitHubTopBar-';
+  const username = 'tziporaziegler';
 
   // Create variables for easy customization
 
   // size
-  var paddingHeight = 5;
+  const paddingHeight = 5;
   const ELEMENT_HEIGHT = 32;
-  var barHeight = ELEMENT_HEIGHT + paddingHeight * 2;
+  const barHeight = ELEMENT_HEIGHT + paddingHeight * 2;
   const ICON_SIZE = 18;
 
   // colors
-  var defaultColor = '#000000';
-  var defaultHoverColor = '#555555';
-  var defaultInverseHoverColor = '#FFFFFF';
-  var defaultBackgroundColor = '#f5f5f5';
-  var defaultBorderColor = '#e5e5e5';
+  const defaultColor = '#000000';
+  const defaultHoverColor = '#555555';
+  const defaultInverseHoverColor = '#FFFFFF';
+  const defaultBackgroundColor = '#f5f5f5';
+  const defaultBorderColor = '#e5e5e5';
+
+  // tabs
+  const tabsToRemove = ['Marketplace', 'Explore'];
 
   // icons
-  var showOverviewIcon = true;
-  var showReposIcon = true;
-  var showStarsIcon = true;
-  var showSettingsIcon = true;
-  var showHelpIcon = false;
-  var showSignOutIcon = false;
-
-  // menu
-  var menuItemsToRemove = ['Marketplace', 'Explore'];
+  const showOverviewIcon = true;
+  const showReposIcon = true;
+  const showStarsIcon = true;
+  const showSettingsIcon = true;
+  const showHelpIcon = false;
+  const showSignOutIcon = false;
 
   // other
-  var isSticky = true;
+  const isSticky = true;
 
   if (document.readyState === 'loading') {
     doTasksRequiringHeader(whenHeaderExists);
@@ -60,7 +56,6 @@ var $ = window.jQuery;
     if ($('header')) {
       removeTabs();
       addIcons();
-      removeMenuItems();
 
       setSize();
       setStickiness();
@@ -77,15 +72,14 @@ var $ = window.jQuery;
     if ($('header') === null) {
       if (typeof observerForContainer !== 'object' || observerForContainer === null) {
         observerForContainer = new MutationObserver(function() {
-          var nodes = document.body.childNodes;
-          if (nodes && nodes.length > 0) {
-            for (let index = 0; index < nodes.length; index++) {
-              let node = nodes[index];
-              if (node.nodeName === 'DIV' && node.classList.contains('container')) {
-                observerForContainer.disconnect();
-                callback();
-              }
-            }
+          const nodes = document.body.childNodes;
+          if (nodes) {
+              nodes.forEach(function(node) {
+                  if (node.nodeName === 'DIV' && node.classList.contains('container')) {
+                      observerForContainer.disconnect();
+                      callback();
+                  }
+              });
           }
         });
         observerForContainer.observe(document.body, {
@@ -105,27 +99,28 @@ var $ = window.jQuery;
   } */
 
   function addGlobalStyle(css) {
-    var head = document.getElementsByTagName('head')[0];
+    const head = document.getElementsByTagName('head')[0];
     if (!head) {
       return;
     }
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = css;
     head.appendChild(style);
   }
 
   function removeTabs() {
-    menuItemsToRemove.forEach(function(item) {
+    tabsToRemove.forEach(function(item) {
         // The Marketplace tab is for some reason wrapped in a div, so check for <div> tags in addition to <a> tags.
         $('header nav div:contains(' + item + '), a:contains(' + item + ')').remove();
     });
   }
 
   function addIcons() {
-    let parent = $('header');
-    let firstItem = $(parent).find('.octicon-bell').closest('.Header-item');
-    let avatar = $(parent).find('.avatar');
+    const parent = $('header');
+    const firstItem = parent.find('.octicon-bell').closest('.Header-item');
+    const avatar = parent.find('.avatar');
+    const detailsMenu = avatar.closest('details').find('details-menu');
 
     // Replace profile pic dropdown menu with link to profile page
     //$(avatar).closest('details').replaceWith(avatar);
@@ -137,7 +132,7 @@ var $ = window.jQuery;
       Font Awesome: https://github.com/encharm/Font-Awesome-SVG-PNG/tree/master/black/svg
     */
 
-    var menuItems = [{
+    const menuIcons = [{
         tooltip: 'Overview',
         url: '/' + username,
         icon: ' <path d="M12,14.002 C12,14.553 11.553,15 11.002,15 L1.001,15 C0.448,15 0,14.552 0,13.999 L0,13 C0,10.367 4,9 4,9 C4,9 4.229,8.591 4,8 C3.159,7.38 3.056,6.41 3,4 C3.173,1.587 4.867,1 6,1 C7.133,1 8.827,1.586 9,4 C8.944,6.41 8.841,7.38 8,8 C7.771,8.59 8,9 8,9 C8,9 12,10.367 12,13 L12,14.002 Z" id="Shape"></path>',
@@ -145,7 +140,8 @@ var $ = window.jQuery;
         viewBoxHeight: 16,
         target: '_self',
         before: true,
-        visible: showOverviewIcon
+        visible: showOverviewIcon,
+        correspondingDowndownMenuItem: 'Your profile',
       },
       {
         tooltip: 'Repos',
@@ -155,7 +151,7 @@ var $ = window.jQuery;
         viewBoxHeight: 16,
         target: '_self',
         before: true,
-        visible: showReposIcon
+        visible: showReposIcon,
       },
       {
         tooltip: 'Stars',
@@ -165,7 +161,8 @@ var $ = window.jQuery;
         viewBoxHeight: 16,
         target: '_self',
         before: true,
-        visible: showStarsIcon
+        visible: showStarsIcon,
+        correspondingDowndownMenuItem: 'Your stars',
       },
       {
         tooltip: 'Help',
@@ -175,7 +172,8 @@ var $ = window.jQuery;
         viewBoxHeight: 1792,
         target: '_blank',
         before: false,
-        visible: showHelpIcon
+        visible: showHelpIcon,
+        correspondingDowndownMenuItem: 'Help',
       },
       {
         tooltip: 'Settings',
@@ -185,68 +183,47 @@ var $ = window.jQuery;
         viewBoxHeight: 16,
         target: '_blank',
         before: false,
-        visible: showSettingsIcon
+        visible: showSettingsIcon,
+        correspondingDowndownMenuItem: 'Settings',
       },
       {
         tooltip: 'Sign Out',
-        url: '', //need to add button functionality
+        url: '', // need to add button functionality
         icon: '<path d="M12,9 L12,7 L8,7 L8,5 L12,5 L12,3 L16,6 L12,9 L12,9 Z M10,12 L6,12 L6,3 L2,1 L10,1 L10,4 L11,4 L11,1 C11,0.45 10.55,0 10,0 L1,0 C0.45,0 0,0.45 0,1 L0,12.38 C0,12.77 0.22,13.11 0.55,13.29 L6,16.01 L6,13 L10,13 C10.55,13 11,12.55 11,12 L11,8 L10,8 L10,12 L10,12 Z" id="Shape"></path>',
         viewBoxWidth: 16,
         viewBoxHeight: 16,
         target: '_self',
         before: false,
-        visible: showSignOutIcon
+        visible: showSignOutIcon,
+        correspondingDowndownMenuItem: 'Sign Out',
       }
     ];
 
-    for (let obj of menuItems) {
-      if (obj.visible) {
-        let element = `
+    menuIcons.forEach(function(icon) {
+      if (icon.visible) {
+        const element = `
                     <div class="Header-item">
-                       <a aria-label="${obj.tooltip}" class="Header-link tooltipped tooltipped-s" href="${obj.url}" target="${obj.target}">
+                       <a aria-label="${icon.tooltip}" class="Header-link tooltipped tooltipped-s" href="${icon.url}" target="${icon.target}">
                             <span class="mail-status "></span>
-                            <svg viewBox="0 0 ${obj.viewBoxWidth} ${obj.viewBoxHeight}" width="${ICON_SIZE}" height="${ICON_SIZE}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                                ${obj.icon}
+                            <svg viewBox="0 0 ${icon.viewBoxWidth} ${icon.viewBoxHeight}" width="${ICON_SIZE}" height="${ICON_SIZE}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                ${icon.icon}
                             </svg>
                         </a>
                     </div>`;
 
-        if (obj.before) {
-          firstItem.before(element);
-        } else {
-          firstItem.after(element);
+        icon.before ? firstItem.before(element) : firstItem.after(element);
+
+        // If a corresponding dropdown menu shortcut exists, remove the now redundant menu item.
+        if(icon.correspondingDowndownMenuItem) {
+            detailsMenu.find('a:contains(' + icon.correspondingDowndownMenuItem + ')').remove();
         }
       }
-    }
-  }
-
-  function removeMenuItems() {
-    let parent = $('header .avatar').closest('details').find('details-menu');
-
-    if (showOverviewIcon) {
-      $(parent).find('a:contains("Your profile")').remove();
-    }
-
-    if (showStarsIcon) {
-      $(parent).find('a:contains("Your stars")').remove();
-    }
-
-    if (showHelpIcon) {
-      $(parent).find('a:contains("Help")').remove();
-    }
-
-    if (showSettingsIcon) {
-      $(parent).find('a:contains("Settings")').remove();
-    }
-
-    if (showSignOutIcon) {
-      $(parent).find('a:contains("Sign Out")').remove();
-    }
+    });
   }
 
   function setSize() {
     // Control header height by changing padding height
-    let css = `
+    const css = `
             .Header {
                 padding-top: ${paddingHeight}px;
                 padding-bottom: ${paddingHeight}px;
@@ -261,7 +238,7 @@ var $ = window.jQuery;
         `<div id="sticky-placeholder-div" style="padding-top: ${barHeight}px;"></div>`
       );
 
-      let css = `
+      const css = `
                 .js-header-wrapper {
                     width:100%;
                     position: fixed !important;
@@ -284,7 +261,7 @@ var $ = window.jQuery;
   }
 
   function setColor() {
-    let css = `
+    const css = `
             .Header {
                 background-color: ${defaultBackgroundColor};
                 border-bottom: 1px solid ${defaultBorderColor};
@@ -317,9 +294,9 @@ var $ = window.jQuery;
   }
 
   function styleSearchBar() {
-    let placeholderStyle = `color:#999 !important;`;
+    const placeholderStyle = `color:#999 !important;`;
 
-    let css = `
+    const css = `
             .Header .header-search-wrapper {
                 background-color:white;
                 border: 1px solid ${defaultBorderColor};
