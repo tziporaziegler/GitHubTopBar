@@ -5,7 +5,7 @@
 // @author      Tzipora Ziegler
 // @include     https://github.com/*
 // @require http://code.jquery.com/jquery-3.3.1.min.js
-// @version     1.3.1
+// @version     1.3.2
 // @run-at document-start
 // @require http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
@@ -45,12 +45,26 @@ const $ = window.jQuery;
     // other
     const isSticky = true;
 
-    if (document.readyState === 'loading') {
-        doTasksRequiringHeader(whenHeaderExists);
-        // window.addEventListener('DOMContentLoaded', afterLoaded);
-    } else {
-        doTasksRequiringHeader(whenHeaderExists);
-        // afterLoaded();
+    doTasksRequiringHeader(whenHeaderExists);
+
+    function doTasksRequiringHeader(callback) {
+        // Observe document.body for elements. Run the callback when the container (first after the top-bar) exists.
+        // This results in the callback running immediately after the top-bar exists.
+        if ($('header') === null) {
+            new MutationObserver(function() {
+                const nodes = document.body.childNodes;
+                if (nodes) {
+                    nodes.forEach(function(node) {
+                        if (node.nodeName === 'DIV' && node.classList.contains('container')) {
+                            this.disconnect();
+                            callback();
+                        }
+                    });
+                }
+            }).observe(document.body, { childList: true });
+        } else {
+            callback();
+        }
     }
 
     function whenHeaderExists() {
@@ -66,41 +80,12 @@ const $ = window.jQuery;
         }
     }
 
-    var observerForContainer;
-
-    function doTasksRequiringHeader(callback) {
-        // Observe document.body for elements. Run the callback when the container (first after the top-bar) exists.
-        // This results in the callback running immediately after the top-bar exists.
-        if ($('header') === null) {
-            if (typeof observerForContainer !== 'object' || observerForContainer === null) {
-                observerForContainer = new MutationObserver(function() {
-                    const nodes = document.body.childNodes;
-                    if (nodes) {
-                        nodes.forEach(function(node) {
-                            if (node.nodeName === 'DIV' && node.classList.contains('container')) {
-                                observerForContainer.disconnect();
-                                callback();
-                            }
-                        });
-                    }
-                });
-                observerForContainer.observe(document.body, {
-                    childList: true
-                });
-            }
-        } else {
-            callback();
-        }
-    }
-
-    /*
-    function afterLoaded() {
+    $(function() {
         // Tasks to be run after the document is loaded.
         if (window.location.pathname.startsWith('/settings/')) {
-            constructPreferences();
+            // constructPreferences();
         }
-    }
-    */
+    });
 
     function addGlobalStyle(css) {
         const head = document.getElementsByTagName('head')[0];
